@@ -1,0 +1,3 @@
+/home/shenhangke/project/linChat/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/shenhangke/project/linChat/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/shenhangke/project/linChat/cmake-build-debug/CMakeFiles/linChat.dir
