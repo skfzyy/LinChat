@@ -19,7 +19,7 @@ endif()
 if (LINUX AND MACOS)
     message("配置Linux相关路径")
     set(USR_LOCAL_H /usr/local/include)
-#    set(CMAKE_PREFIX_PATH "/Users/shenhangke/tools/QT/5.15.2/clang_64/lib/cmake/")
+    #set CMAKE_PREFIX_PATH by Linux_QT_ENV.sh
 endif ()
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -29,11 +29,6 @@ set(CMAKE_AUTORCC ON)
 set(UTIL_INCLUDE_H ./Util/include)
 find_package(Qt5Widgets REQUIRED)
 
-
-if (LINUX AND MACOS)
-    message("配置Linux相关路径")
-    set(USR_LOCAL_H /usr/local/include)
-endif ()
 include_directories(${UTIL_INCLUDE_H} ${USR_LOCAL_H})
 
 if (USE_UI)
