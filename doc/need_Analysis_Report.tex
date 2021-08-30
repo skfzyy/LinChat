@@ -2,6 +2,8 @@
 \title{LinChat 需求文档}
 \author{沈航可}
 \date{2021年8月14日}
+\pagestyle{plain}
+\usepackage[a4paper, left = 2cm, right = 2cm, bottom=2cm,top=2cm]{geometry}
 
 % \usepackage[UTF8,scheme=plain]{ctex}
 \setCJKmainfont{SimSun}
@@ -13,5 +15,28 @@
 \maketitle
 \section{项目说明}
 \subsection{立项目的}
+微信作为日常的大众通讯工具,目前仅开发了Windows和MacOS版本,对于部分将Linux作为工作平台的
+程序员和其他领域的工程师来说,Linux平台缺乏一款通用的通讯工具.虽然目前可以通过Wine将微信引入
+Linux平台,但此工具仍然还有一些缺陷.例如缺乏对原生Linux的支持、文件系统配置仍然还是沿用了Window的习惯
+等,这降低了工具的易用性和通用性.
+同时,作为一个喜欢科技化界面的程序员来说,微信的UI仍然也无法让人特别满意.
+
+因此,本项目旨在开发一款能够在多平台(目前主要在Linux系统)运行的通用聊天工具,通过编写富有科技化的用户界面,
+使聊天成为一件酷炫的事情.
+
+\section{拟使用的开发框架与工具}
+针对本项目的需求,选定的框架和技术方案需要满足以下几个需求:
+
+1.高效.本项目需要能够高效地运行,尽可能的降低网络延迟的同时,能够在配置尽可能低的平台上运行.
+
+2.跨平台.聊天工具不应仅限于运行在Linux端,对于Windows、macOS、Android、IOS等平台的兼容性也至关重要.目前开发的版本
+主要实现对于PC平台(Win,Linux,macOS)的支持.
+
+3.界面.具有一定的科技感.初始的界面皮肤倾向于使用类似项目:https://github.com/seenaburns/dex-ui与项目https://github.com/GitSquared/edex-ui.
+其中, https://github.com/seenaburns/dex-ui 使用c++开发,更具参考性.
+
+\subsection{UI框架}
+由于QT具有良好的跨平台性,通过开源对个人开发者开放,同时,QT对OpenGL也有良好的支持,因此拟选定QT作为编写UI
+的基础框架.
 
 \end{document}
