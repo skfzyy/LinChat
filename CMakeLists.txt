@@ -2,43 +2,47 @@ cmake_minimum_required(VERSION 3.20)
 project(linChat)
 
 set(CMAKE_CXX_STANDARD 14)
-set(USE_UI 0)
-set(SERVER_OR_CLIENT 1)
+set(USE_UI OFF)
+set(SERVER_OR_CLIENT ON)
 
-set(TEST_LinChat 1)
+set(TEST_LinChat ON)
 
 
 if (SERVER_OR_CLIENT)
-    set(SERVER 1)
+    set(SERVER ON)
 else ()
-    set(CLient 1)
+    set(CLient ON)
 endif ()
 
 add_subdirectory(./PyCom)
 
 
 #区分操作系统
-if (CMAKE_HOST_APPLE)
-    message("the system is Macos")
-    set(MACOS 1)
-elseif (CMAKE_HOST_UNIX)
-    message("the system is Linux")
-    set(LINUX 1)
-elseif(CMAKE_HOST_WIN32)
-    message("the system is Win32")
-    set(WIN32 1)
-endif ()
+if (APPLE)
+    set(MacOS ON)
+    add_definitions(-DMACOS)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    add_definitions(-DLinux)
+    set(Linux ON)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(Windows ON)
+    add_definitions(-DWINDOWS)
+endif()
 
 # 设置环境相关变量
 # 考虑后面引入QT来编辑界面
 # 头文件
-if (LINUX OR MACOS)
+
+
+if (MacOS)
     message("配置Linux相关路径")
     set(USR_LOCAL_H /usr/local/include)
     set(PY_BIND_H /usr/local/Cellar/pybind11/2.7.0/include)
     message("include pybind")
     include_directories(${PY_BIND_H})
     #set CMAKE_PREFIX_PATH by Linux_QT_ENV.sh
+elseif(Linux)
+    # do some linux setting
 endif ()
 
 
@@ -76,9 +80,3 @@ else ()
         endif ()
     endif ()
 endif ()
-
-
-#if (TEST_LinChat)
-#    message("test the linChat Test")
-#    add_executable(linChat_Test main_test.cpp)
-#endif ()
