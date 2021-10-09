@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 #switch option
 set(TEST_LinChat OFF)
-set(USE_UI ON)
+set(USE_UI OFF)
 set(SERVER_OR_CLIENT ON)
 
 
