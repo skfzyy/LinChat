@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <string>
+#include <string.h>
 
 static bool stop= false;
 static void handle_term(int sig){

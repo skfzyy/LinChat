@@ -2,10 +2,16 @@ cmake_minimum_required(VERSION 3.20)
 project(linChat)
 
 set(CMAKE_CXX_STANDARD 14)
-set(USE_UI OFF)
+
+#switch option
+set(TEST_LinChat OFF)
+set(USE_UI ON)
 set(SERVER_OR_CLIENT ON)
 
-set(TEST_LinChat ON)
+
+# variable
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+message(${SOURCE_DIR})
 
 
 if (SERVER_OR_CLIENT)
@@ -13,8 +19,6 @@ if (SERVER_OR_CLIENT)
 else ()
     set(CLient ON)
 endif ()
-
-add_subdirectory(./PyCom)
 
 
 #区分操作系统
@@ -29,54 +33,47 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
     add_definitions(-DWINDOWS)
 endif()
 
-# 设置环境相关变量
-# 考虑后面引入QT来编辑界面
-# 头文件
-
-
 if (MacOS)
-    message("配置Linux相关路径")
-    set(USR_LOCAL_H /usr/local/include)
-    set(PY_BIND_H /usr/local/Cellar/pybind11/2.7.0/include)
-    message("include pybind")
-    include_directories(${PY_BIND_H})
-    #set CMAKE_PREFIX_PATH by Linux_QT_ENV.sh
+    #do some macos setting
 elseif(Linux)
     # do some linux setting
 endif ()
 
-
-set(QT_FOLDER_PROJECT ${CMAKE_CURRENT_SOURCE_DIR}/LinChatUI)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-set(UTIL_SRC_H ${CMAKE_CURRENT_SOURCE_DIR}/Util/src)
-set(UTIL_INCLUDE_H ${CMAKE_CURRENT_SOURCE_DIR}/Util/include)
+# head files
+include_directories(${SOURCE_DIR})
+
+#src files
+aux_source_directory(${SOURCE_DIR}/LinChatUI LinChatUI_FILES)
+aux_source_directory(${SOURCE_DIR}/Util Util_FILES)
+
+
 find_package(Qt5Widgets REQUIRED)
 
-include_directories(${UTIL_INCLUDE_H} ${USR_LOCAL_H})
-aux_source_directory(${UTIL_SRC_H} UTIL_SRC_FILES)
-aux_source_directory(${UTIL_INCLUDE_H} UTIL_INCLUDE_FILES)
-
 if (TEST_LinChat)
+    # 测试用,编译main_test.cpp
     message("test the linChat Test")
-    add_executable(linChat_Test main_test.cpp ${UTIL_INCLUDE_FILES} ${UTIL_SRC_FILES})
-    target_link_libraries(linChat_Test "-framework Python")
-    target_link_libraries(linChat_Test pycom)
+    add_executable(linChat_Test main_test.cpp ${Util_FILES})
 else ()
     if (USE_UI)
         message("test ui")
-        aux_source_directory(${QT_FOLDER_PROJECT} UI_FILES)
-        add_executable(linChat ${QT_FOLDER_PROJECT}/main.cpp ${UI_FILES} ${UTIL_INCLUDE_FILES} ${UTIL_SRC_FILES})
-        target_link_libraries(linChat Qt5::Widgets)
+        # QT setting
+        find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core REQUIRED)
+        find_package(Qt5 COMPONENTS Widgets Core REQUIRED)
+        add_definitions(-DUSE_UI=true)
+
+        add_executable(linChat ${LinChatUI_FILES} ${Util_FILES})
+        target_link_libraries(linChat Qt5::Widgets Qt5::Core)
     else ()
         message("use console")
         if (SERVER)
-            add_executable(linChat_Console_Server main_server.cpp ${UTIL_INCLUDE_FILES} ${UTIL_SRC_FILES})
+            add_executable(linChat_Console_Server main_server.cpp ${Util_FILES})
         else ()
             #        add_executable(linChat_Test main_test.cpp)
-            add_executable(linChat_Console_Client main_client.cpp ${UTIL_INCLUDE_FILES} ${UTIL_SRC_FILES})
+            add_executable(linChat_Console_Client main_client.cpp ${Util_FILES})
         endif ()
     endif ()
 endif ()
